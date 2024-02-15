@@ -13,10 +13,9 @@ app.use(express.json())
 app.use(router)
 
 
-//database connection 
-connectToDatabase() 
-
 //server configuration
 app.listen(8000, ()=>{
     console.log('app listening to port 8000');
 })
+
+export {app}
