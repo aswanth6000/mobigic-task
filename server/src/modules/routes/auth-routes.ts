@@ -5,6 +5,7 @@ const authController = new AuthController()
 
 const router = express.Router();
 
+//POST routes
 router.post('/login', authController.login)
 router.post('/register', authController.registerUser)
 

@@ -11,9 +11,9 @@ const authService = new AuthService()
 
 
 export class AuthController{
-// @DESC users can signup to the website by validation
+// @DESC users can login to the website by validation
 // @METHOD  post
-// @PATH /signup
+// @PATH /login
     async login(req: Request, res: Response){
         const {email, password} = req.body;
         try {
@@ -33,7 +33,9 @@ export class AuthController{
             console.error("An error occoured on auth controller ", error)
         }
     }
-
+// @DESC users can register to the website by validation
+// @METHOD  post
+// @PATH /register
     async registerUser(req: Request, res: Response) {
         try {
           const userData = req.body;
