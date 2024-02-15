@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v2 
-      - run: cd src && npm install && npm run test:ci
+      - run: cd server && npm install && npm run test:ci
