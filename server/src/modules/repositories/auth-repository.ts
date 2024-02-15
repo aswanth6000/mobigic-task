@@ -10,7 +10,7 @@ export class AuthRepository{
         const user = await userModel.find({email: email});
         return user
         } catch (error) {
-            console.error("An error Occoured on User Repository: ", error)
+            console.error("An error Occoured on Auth Repository: ", error)
         }
     }
     //Register

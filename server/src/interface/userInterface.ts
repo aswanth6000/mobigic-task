@@ -4,5 +4,5 @@ export default interface Userlogin{
     password:string,
     email: string,
     confirmpassword: string
-
 }
+
