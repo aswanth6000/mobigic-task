@@ -30,7 +30,7 @@ export class AuthController{
                 res.status(401).json({message: "User not exists"})
             }
         } catch (error) {
-            console.error("An error occoured on auth controller ", error)
+            console.error("An error occoured on auth controller. ", error)
         }
     }
 // @DESC users can register to the website by validation
