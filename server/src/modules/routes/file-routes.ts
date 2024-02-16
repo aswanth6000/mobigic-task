@@ -7,6 +7,8 @@ const upload = multer({ storage });
 
 const userController = new UserController;
 
-const router = express.Router()
+const fileRouter = express.Router()
 
-router.post('/upload',upload.single('uploadFile'),userController.uploadFile )
+fileRouter.post('/upload',upload.single('filename'),userController.uploadFile )
+
+export default fileRouter
