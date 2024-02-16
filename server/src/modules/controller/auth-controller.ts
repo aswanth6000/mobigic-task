@@ -4,8 +4,18 @@ import { AuthService } from "../services/auth-service";
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 import Userlogin from "../../interface/userInterface";
 import dotenv from 'dotenv'; //dot env not required in newer version of node js // added for test using jest
+import "express-session";
+declare module "express-session" {
+  interface SessionData {
+    jwt: string;
+  }
+}
+
+
+
 
 dotenv.config()
+
 
 const jwtSecret: Secret = process.env.JWT_KEY!
 
@@ -26,6 +36,7 @@ export class AuthController{
                 if(userVerify){
                     const token = jwt.sign({ userId: userData._id }, jwtSecret, { expiresIn: '1h' });
                     res.status(200).json({message: "login success", token})
+                    // req.session.jwt  = token
                 }else{
                     res.status(401).json({messgae:"incorrect password"})
                 }
