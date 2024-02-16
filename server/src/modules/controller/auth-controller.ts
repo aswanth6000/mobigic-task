@@ -3,6 +3,19 @@ import bcrypt from 'bcrypt';
 import { AuthService } from "../services/auth-service";
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 import Userlogin from "../../interface/userInterface";
+import dotenv from 'dotenv'; //dot env not required in newer version of node js // added for test using jest
+import "express-session";
+declare module "express-session" {
+  interface SessionData {
+    jwt: string;
+  }
+}
+
+
+
+
+dotenv.config()
+
 
 const jwtSecret: Secret = process.env.JWT_KEY!
 
@@ -18,11 +31,12 @@ export class AuthController{
         const {email, password} = req.body;
         try {
             const userData: any = await authService.loginUser(email) //todo fix ts
-            if(userData){
+            if(userData.length > 0){
                 const userVerify = await bcrypt.compare(password,userData[0].password)
                 if(userVerify){                  
                     const token = jwt.sign({ userId: userData[0]._id }, jwtSecret, { expiresIn: '1h' });
                     res.status(200).json({message: "login success", token})
+                    // req.session.jwt  = token
                 }else{
                     res.status(401).json({messgae:"incorrect password"})
                 }
