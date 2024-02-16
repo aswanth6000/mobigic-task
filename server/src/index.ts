@@ -3,10 +3,12 @@ import connectToDatabase from './config/DBConfig';
 import router from './modules/routes/auth-routes';
 import dotenv from 'dotenv';
 import userRouter from './modules/routes/file-routes';
+import cors from 'cors';
 
 dotenv.config()
 
 const app = express();
+app.use(cors())
 
 app.use(express.json())
 

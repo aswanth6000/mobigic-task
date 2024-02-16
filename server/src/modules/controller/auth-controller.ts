@@ -24,12 +24,12 @@ export class AuthController{
 
             
             if(userData.length > 0){
-                const userVerify = await bcrypt.compare(password,userData[0].password)
+                const userVerify = await bcrypt.compare(password,userData[0].password)                
                 if(userVerify){
                     const token = jwt.sign({ userId: userData[0]._id }, jwtSecret, { expiresIn: '1h' });
                     res.status(200).json({message: "login success", token})
                 }else{
-                    res.status(401).json({messgae:"incorrect password"})
+                    return res.status(401).json({messgae:"incorrect password"})
                 }
             }else{
                 res.status(401).json({message: "User not exists"})

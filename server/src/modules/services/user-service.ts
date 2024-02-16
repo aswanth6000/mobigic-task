@@ -34,7 +34,6 @@ export class UserService{
             return userRepository.getAllFiles(data)
         } catch (error) {
             console.error(error);
-            
         }
     }
 }
