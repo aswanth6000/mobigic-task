@@ -30,7 +30,7 @@ const Login = () => {
         }else{
           setLoad(false)
           setError(response.data.message)
-        }
+        } 
       }).catch((error) => {
         setLoad(false)
         setError(error.response.data.message)        
