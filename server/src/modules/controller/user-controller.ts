@@ -3,6 +3,7 @@ import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { UserService } from "../services/user-service";
 import FileType from "../../interface/file-interface"
 import fs from "fs";
+import path from "path";
 
 
 const userService = new UserService()
@@ -15,7 +16,7 @@ export class UserController {
   // @PATH /upload
   async uploadFile(req: any, res: Response) { //todo ts fix
     try {
-      if (req.files) {
+      if (req.file) {
         const { filename } = req.file;
         const token = req.headers.authorization?.split(' ')[1];
 
@@ -49,18 +50,17 @@ export class UserController {
   }
   // @DESC authenticated users file delete
   // @METHOD  post
-  // @PATH /file delete
+  // @PATH /deletefile
   async fileDelete(req: Request, res: Response) {
     const { fileId } = req.body;
     try {
       const deleteResult: any  = await userService.deleteFile(fileId); //todo fix ts
       const {filename} = deleteResult;
-      const PATH = `../../../uploads/${filename}`;
+      const PATH =  path.join(__dirname, '..','..','..','uploads', filename )
+      //deleting from uploads folder
       fs.unlink(PATH, (err)=>{
-        console.log("---del");
-        console.log(err);
+        console.error(err);
       })
-      console.log(deleteResult);
     } catch (error) {
       console.error("Error at user Controller", error)
     }
