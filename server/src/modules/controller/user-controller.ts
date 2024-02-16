@@ -12,20 +12,22 @@ export class UserController{
 // @METHOD  post
 // @PATH /upload
     async uploadFile(req: any, res: Response){ //todo ts fix
-        try {
-            if(req.files){
+        try {          
+            if(req.file){
                 const { filename } = req.file;
+                
                 const token = req.headers.authorization?.split(' ')[1];
-
+                
                 if (!token) {
                   res.status(401).json({ error: 'Unauthorized - Token not provided' });
                   return;
                 }
           
                 let decodedToken: JwtPayload;
-          
+                
                 try {
                   decodedToken = jwt.verify(token, jwtSecret) as JwtPayload;
+
                 } catch (jwtError) {
                   console.error('JWT Verification Error:', jwtError);
                   res.status(401).json({ error: 'Unauthorized - Invalid token' });
@@ -37,8 +39,14 @@ export class UserController{
                     userId: userId,
                     filename: filename,
                     uniqueCode: code
+                }                
+                const uploadedFile = await userService.fileUpload(data);
+                if(uploadedFile){
+                  res.status(200).json({message: "file uploaded success", uploadedFile})
+                }else{
+                  res.status(400).json({message:"file uploaded faild"})
                 }
-                userService.fileUpload(data);
+
                 
             }
         } catch (error) {

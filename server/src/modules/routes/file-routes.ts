@@ -9,6 +9,6 @@ const userController = new UserController;
 
 const fileRouter = express.Router()
 
-fileRouter.post('/upload',upload.single('uploadFile'),userController.uploadFile )
+fileRouter.post('/upload',upload.single('filename'),userController.uploadFile )
 
 export default fileRouter
