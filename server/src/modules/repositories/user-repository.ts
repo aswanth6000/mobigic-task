@@ -12,4 +12,13 @@ export class UserRepository{
         }
 
     }
+    // file delte
+    async userFileDelete(data: string){
+        try {
+            const deleteFile = await fileModel.findOneAndDelete({uniqueCode: data})
+            return deleteFile
+        } catch (error) {
+            console.error("An error on user repository ", error)
+        }
+    }
 }
