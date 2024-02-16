@@ -13,4 +13,9 @@ app.use(express.json())
 app.use(router)
 
 
+//server configuration
+app.listen(8000, ()=>{
+    console.log('app listening to port 8000');
+})
+
 export {app}

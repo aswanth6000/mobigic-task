@@ -7,8 +7,9 @@ const upload = multer({ storage });
 
 const userController = new UserController;
 
-const fileRouter = express.Router()
+const userRouter = express.Router()
 
-fileRouter.post('/upload',upload.single('filename'),userController.uploadFile )
+userRouter.post('/upload',upload.single('filename'),userController.uploadFile )
+userRouter.delete('/deletefile', userController.fileDelete);
 
-export default fileRouter
+export default userRouter;

@@ -1,8 +1,8 @@
 import express from 'express';
 import connectToDatabase from './config/DBConfig';
 import router from './modules/routes/auth-routes';
-import fileRouter from './modules/routes/file-routes';
 import dotenv from 'dotenv';
+import userRouter from './modules/routes/file-routes';
 
 dotenv.config()
 
@@ -12,7 +12,7 @@ app.use(express.json())
 
 //Routers
 app.use(router)
-app.use(fileRouter)
+app.use(userRouter)
 
 
 //database connection 

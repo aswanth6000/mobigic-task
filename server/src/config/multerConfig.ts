@@ -2,7 +2,6 @@ import { Request } from 'express';
 import multer, { FileFilterCallback, Multer } from 'multer';
 import path from 'path';
 
-//multer configuration
 
 export const storage = multer.diskStorage({
     destination: function (req, file, cb) {
