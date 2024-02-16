@@ -46,8 +46,6 @@ export class UserController{
                 }else{
                   res.status(400).json({message:"file uploaded faild"})
                 }
-
-                
             }
         } catch (error) {
             
