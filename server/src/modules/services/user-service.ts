@@ -20,4 +20,21 @@ export class UserService{
             console.error("Error on user service", error);
         }
     }
+    //download file..
+    async downloadFile(data: string){
+        try {
+            return userRepository.userFileDownload(data)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    //get all files
+    async getAllFiles(data: string){
+        try {
+            return userRepository.getAllFiles(data)
+        } catch (error) {
+            console.error(error);
+            
+        }
+    }
 }

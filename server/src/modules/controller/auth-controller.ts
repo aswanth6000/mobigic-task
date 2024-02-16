@@ -21,10 +21,12 @@ export class AuthController{
         const {email, password} = req.body;
         try {
             const userData: any = await authService.loginUser(email) //todo fix ts
+
+            
             if(userData.length > 0){
                 const userVerify = await bcrypt.compare(password,userData[0].password)
                 if(userVerify){
-                    const token = jwt.sign({ userId: userData._id }, jwtSecret, { expiresIn: '1h' });
+                    const token = jwt.sign({ userId: userData[0]._id }, jwtSecret, { expiresIn: '1h' });
                     res.status(200).json({message: "login success", token})
                 }else{
                     res.status(401).json({messgae:"incorrect password"})

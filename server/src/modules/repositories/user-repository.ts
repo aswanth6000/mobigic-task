@@ -21,4 +21,23 @@ export class UserRepository{
             console.error("An error on user repository ", error)
         }
     }
+    //file download
+    async userFileDownload(data: string){
+        try {
+            const fileToDownload = await fileModel.findOne({uniqueCode: data})
+            return fileToDownload
+        } catch (error) {
+            console.error("File download error",error);
+        }
+    }
+    //get all files
+    async getAllFiles(data: string){
+        try {
+            const getAllFiles = await fileModel.find({userId: data})
+            return getAllFiles;
+        } catch (error) {
+            console.error("Error in get all files", error);
+            
+        }
+    }
 }
