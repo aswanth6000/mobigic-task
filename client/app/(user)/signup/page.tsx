@@ -4,6 +4,7 @@ import useFormValidation from '@/hooks/validation';
 import { useRouter } from 'next/navigation';
 import axios from "../../../config/axios";
 import { useState } from "react";
+import { toast } from "sonner";
 const Signup = () => {
   const [err, setErr] = useState('')
   const router = useRouter()
@@ -18,6 +19,7 @@ const Signup = () => {
     setConfirmPassword,
     errors,
   } = useFormValidation();
+  //todo add loading state
   const sendUserData = async (userData: any) => {
     try {
       axios.post('/register', userData, {
@@ -33,7 +35,8 @@ const Signup = () => {
         }
       }).catch((error)=>{
         setErr(error.response.data.message)
-        console.error(error);
+        console.log(error.response.data.message);
+        toast("Event has been created.")
       })
 
     } catch (error) {
@@ -49,7 +52,6 @@ const Signup = () => {
         password: password
       }
       sendUserData(userData)
-      router.push('/login')
   }
   return (
     <section className="bg-black dark:bg-white-900">
@@ -77,7 +79,7 @@ const Signup = () => {
                   id="username"
                   value={name}
                   onChange={(e)=>setName( e.target.value)}
-                  className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 text-white dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
+                  className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 text-black dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
                   placeholder="Username"
                   required
                 />
@@ -95,7 +97,7 @@ const Signup = () => {
                   id="email"
                   value={email}
                   onChange={(e)=>setEmail( e.target.value)}
-                  className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 text-white dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
+                  className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 text-black dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
                   placeholder="name@company.com"
                   required
                 />
@@ -114,7 +116,7 @@ const Signup = () => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
+                  className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
                   placeholder="••••••••"
                   required
                 />
@@ -138,6 +140,7 @@ const Signup = () => {
                   required
                 />
               </div>
+              {err && <p className='block mb-2 mt-2 text-sm font-medium text-red-600 dark:text-red-600 text-center'>{err}</p>}
               <button
                 type="submit"
                 className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 transition-all duration-500 ease-in-out dark:focus:ring-green-800"

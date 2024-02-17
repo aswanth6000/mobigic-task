@@ -16,8 +16,10 @@ export class UserController {
   // @PATH /upload
   async uploadFile(req: any, res: Response) { //todo ts fix
     try {
+      
       if (req.file) {
         const { filename } = req.file;
+        
         const token = req.headers.authorization?.split(' ')[1];
 
         if (!token) {
