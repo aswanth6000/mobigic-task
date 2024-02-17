@@ -1,6 +1,56 @@
+"use client"
 import { ParticlesComponent } from "@/components/particles";
+import useFormValidation from '@/hooks/validation';
+import { useRouter } from 'next/navigation';
+import axios from "../../../config/axios";
+import { useState } from "react";
+const Signup = () => {
+  const [err, setErr] = useState('')
+  const router = useRouter()
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    errors,
+  } = useFormValidation();
+  const sendUserData = async (userData: any) => {
+    try {
+      axios.post('/register', userData, {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json'
+        }
+      }).then((response)=>{
+        if(response.status === 200){
+          router.push('/login')
+        }else {
+          setErr("Registration failed")
+        }
+      }).catch((error)=>{
+        setErr(error.response.data.message)
+        console.error(error);
+      })
 
-const Login = () => {
+    } catch (error) {
+      console.error('Error sending user data to server:', error);
+    }
+  };
+
+  const  handleSubmit  = (e: React.FormEvent<HTMLFormElement>) =>{
+    e.preventDefault()
+      const userData: any = {
+        username: name,
+        email: email,
+        password: password
+      }
+      sendUserData(userData)
+      router.push('/login')
+  }
   return (
     <section className="bg-black dark:bg-white-900">
       <ParticlesComponent />
@@ -12,7 +62,7 @@ const Login = () => {
             </h1>
             <form
               className="space-y-4 md:space-y-6"
-              // onSubmit={handleLogin}
+              onSubmit={handleSubmit}
             >
               <div>
                 <label
@@ -25,8 +75,8 @@ const Login = () => {
                   type="text"
                   name="username"
                   id="username"
-                  // value={email}
-                  // onChange={(e)=>setEmail( e.target.value)}
+                  value={name}
+                  onChange={(e)=>setName( e.target.value)}
                   className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 text-white dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
                   placeholder="Username"
                   required
@@ -43,14 +93,14 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
-                  // value={email}
-                  // onChange={(e)=>setEmail( e.target.value)}
+                  value={email}
+                  onChange={(e)=>setEmail( e.target.value)}
                   className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 text-white dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
                   placeholder="name@company.com"
                   required
                 />
               </div>
-              {/* {errors.email && <p className='block mb-2 mt-2 text-sm font-medium text-red-600 dark:text-red-600 text-center'>{errors.email}</p>} */}
+              {errors.email && <p className='block mb-2 mt-2 text-sm font-medium text-red-600 dark:text-red-600 text-center'>{errors.email}</p>}
               <div>
                 <label
                   htmlFor="password"
@@ -62,13 +112,13 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
-                  // value={password}
-                  // onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
                   placeholder="••••••••"
                   required
                 />
-                {/* {errors.password && <p className='block mb-2 mt-2 text-sm font-medium text-red-600 dark:text-red-600 text-center'>{errors.password}</p>} */}
+                {errors.password && <p className='block mb-2 mt-2 text-sm font-medium text-red-600 dark:text-red-600 text-center'>{errors.password}</p>}
               </div>
               <div>
                 <label
@@ -81,8 +131,8 @@ const Login = () => {
                   type="password"
                   name="confirmPassword"
                   id="confirmPassword"
-                  // value={confirmPassword}
-                  // onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="bg-white-50 border border-white-300 text-white-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500 focus:outline-none"
                   placeholder="••••••••"
                   required
@@ -113,4 +163,4 @@ const Login = () => {
     </section>
   );
 };
-export default Login;
+export default Signup;

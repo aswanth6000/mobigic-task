@@ -13,7 +13,7 @@ const Login = () => {
   const {email, setEmail, errors, password, setPassword} = useFormValidation()
   const router = useRouter()
 
-  const sendUserData = async (userData: any) => {
+  const sendUserData = (userData: any) => {
     try {
       setLoad(true)
       axios.post('/login', userData, {
