@@ -99,18 +99,34 @@ const Page = () => {
     
     axios.get(`http://localhost:8000/downloadfile/${code}`, { responseType: 'blob' })
     .then((response)=>{
+      wait().then(() => setOpenCode(false));
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "file.jpg"); // Provide a default filename
+      link.setAttribute("download", "file.jpg"); 
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link); // Cleanup
-          
+      document.body.removeChild(link); 
         }).catch((error)=>{
           console.log(error);
           
         })
+  }
+
+  const handleDelete = (uniqueCode: string): void => {
+    setRefresh(true)
+    axios.delete('http://localhost:8000/deletefile', {
+      data: { fileId: uniqueCode }, // Pass fileId in the request body
+      headers: {
+        "Content-Type": "application/json", // Use appropriate content type
+      },
+    }).then((response) => {
+      setRefresh(false)
+      toast.success(response.data.message)
+      console.log(response.data);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   return (
@@ -255,6 +271,7 @@ const Page = () => {
                       </Dialog.Root>
                       <Button
                         className="font-medium ml-2 text-white bg-red-500 hover:bg-white hover:text-black"
+                        onClick={()=>handleDelete(item.uniqueCode)}
                       >
                         Delete
                       </Button>

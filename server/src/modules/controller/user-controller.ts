@@ -58,6 +58,8 @@ export class UserController {
   // @PATH /deletefile
   async fileDelete(req: Request, res: Response) {
     const { fileId } = req.body;
+    console.log(req.body);
+    
     try {
       const deleteResult: any  = await userService.deleteFile(fileId); //todo fix ts      
       if(deleteResult){
