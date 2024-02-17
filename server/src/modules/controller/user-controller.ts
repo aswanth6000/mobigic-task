@@ -100,6 +100,7 @@ export class UserController {
   // @METHOD  get
   // @PATH /downloadfile
   async getAllFiles(req: Request, res: Response){
+    const page: number = parseInt(req.query.page as string || '0', 10);
     try {
       const token = req.headers.authorization?.split(' ')[1];
 
@@ -119,7 +120,7 @@ export class UserController {
         return;
       }        
       const userId = decodedToken.userId;
-      const allFiles: any = await userService.getAllFiles(userId)
+      const allFiles: any = await userService.getAllFiles(userId, page)
       if(allFiles?.length > 0){
         res.status(200).json(allFiles)
       }else{

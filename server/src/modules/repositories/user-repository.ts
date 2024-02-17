@@ -31,9 +31,10 @@ export class UserRepository{
         }
     }
     //get all files
-    async getAllFiles(data: string){
+    async getAllFiles(data: string, page: number){
         try {
-            const getAllFiles = await fileModel.find({userId: data})
+            const PAGE_SIZE = 10
+            const getAllFiles = await fileModel.find({userId: data}).sort({ createdAt: 1 }).limit(PAGE_SIZE).skip(PAGE_SIZE * page)
             return getAllFiles;
         } catch (error) {
             console.error("Error in get all files", error);
