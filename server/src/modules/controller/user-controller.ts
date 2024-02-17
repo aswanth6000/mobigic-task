@@ -58,9 +58,14 @@ export class UserController {
   // @PATH /deletefile
   async fileDelete(req: Request, res: Response) {
     const { fileId } = req.body;
-    console.log(req.body);
     
     try {
+      const token = req.headers.authorization?.split(' ')[1];
+
+      if (!token) {
+        res.status(401).json({ error: 'Unauthorized - Token not provided' });
+        return;
+      }
       const deleteResult: any  = await userService.deleteFile(fileId); //todo fix ts      
       if(deleteResult){
         const {filename} = deleteResult;
@@ -84,8 +89,13 @@ export class UserController {
 
   async fileDownload(req: Request, res: Response){
     const  uniqueCode  = req.params.uId
-    console.log(uniqueCode);
     try {
+      const token = req.headers.authorization?.split(' ')[1];
+
+      if (!token) {
+        res.status(401).json({ error: 'Unauthorized - Token not provided' });
+        return;
+      }
       const fileDownload: any = await userService.downloadFile(uniqueCode); //todo fix ts
       if(fileDownload){
         const { filename } = fileDownload

@@ -116,9 +116,9 @@ const Page = () => {
   const handleDelete = (uniqueCode: string): void => {
     setRefresh(true)
     axios.delete('http://localhost:8000/deletefile', {
-      data: { fileId: uniqueCode }, // Pass fileId in the request body
+      data: { fileId: uniqueCode }, 
       headers: {
-        "Content-Type": "application/json", // Use appropriate content type
+        "Content-Type": "application/json", 
       },
     }).then((response) => {
       setRefresh(false)
