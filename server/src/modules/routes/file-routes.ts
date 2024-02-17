@@ -15,7 +15,7 @@ userRouter.get('/getfiles', userController.getAllFiles)
 
 //post route
 userRouter.post('/upload',upload.single('filename'),userController.uploadFile )
-userRouter.post('/downloadfile', userController.fileDownload);
+userRouter.get('/downloadfile/:uId', userController.fileDownload);
 
 //delete route
 userRouter.delete('/deletefile', userController.fileDelete);

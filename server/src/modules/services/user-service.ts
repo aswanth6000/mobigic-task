@@ -29,9 +29,9 @@ export class UserService{
         }
     }
     //get all files
-    async getAllFiles(data: string, page: number){
+    async getAllFiles(data: string){
         try {
-            return userRepository.getAllFiles(data, page)
+            return userRepository.getAllFiles(data)
         } catch (error) {
             console.error(error);
         }

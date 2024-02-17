@@ -81,7 +81,8 @@ export class UserController {
   // @PATH /downloadfile
 
   async fileDownload(req: Request, res: Response){
-    const { uniqueCode } = req.body
+    const  uniqueCode  = req.params.uId
+    console.log(uniqueCode);
     try {
       const fileDownload: any = await userService.downloadFile(uniqueCode); //todo fix ts
       if(fileDownload){
@@ -100,7 +101,7 @@ export class UserController {
   // @METHOD  get
   // @PATH /downloadfile
   async getAllFiles(req: Request, res: Response){
-    const page: number = parseInt(req.query.page as string || '0', 10);
+    
     try {
       const token = req.headers.authorization?.split(' ')[1];
 
@@ -120,7 +121,8 @@ export class UserController {
         return;
       }        
       const userId = decodedToken.userId;
-      const allFiles: any = await userService.getAllFiles(userId, page)
+      const allFiles: any = await userService.getAllFiles(userId)
+
       if(allFiles?.length > 0){
         res.status(200).json(allFiles)
       }else{
