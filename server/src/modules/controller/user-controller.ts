@@ -97,12 +97,14 @@ export class UserController {
         return;
       }
       const fileDownload: any = await userService.downloadFile(uniqueCode); //todo fix ts
+      
       if(fileDownload){
         const { filename } = fileDownload
         const filePath = path.join(__dirname, '..','..','..','uploads', filename);
-        res.download(filePath)
+        res.status(200).download(filePath)
       }else{
-        res.json({message: 'Incorrect Code'})
+        res.status(404).json({messageCode: 'Incorrect Code'})
+        return
       }
     } catch (error) {
       console.error("Error in file download", error);

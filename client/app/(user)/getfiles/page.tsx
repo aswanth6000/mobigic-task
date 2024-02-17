@@ -23,20 +23,20 @@ import { Input } from "@/components/ui/input";
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 const Page = () => {
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState("");
   const [openCode, setOpenCode] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [file, setFile]: any = useState(null); //todo fix
   const [load, setLoad] = useState(false);
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [codeErr, setCodeErr] = useState("");
 
   const handleFileUpload = () => {
     try {
       setLoad(true);
       const formData = new FormData();
       formData.append("filename", file);
-
       axios
         .post("http://localhost:8000/upload", formData, {
           headers: {
@@ -93,41 +93,49 @@ const Page = () => {
     return new Date(date).toLocaleTimeString("en-US", options);
   }
 
-  const handleDownload = () =>{
-    console.log(code);
-  
-    
-    axios.get(`http://localhost:8000/downloadfile/${code}`, { responseType: 'blob' })
-    .then((response)=>{
-      wait().then(() => setOpenCode(false));
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "file.jpg"); 
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link); 
-        }).catch((error)=>{
-          console.log(error);
-          
-        })
-  }
+  const handleDownload = () => {
+    axios
+      .get(`http://localhost:8000/downloadfile/${code}`, {
+        responseType: "blob",
+      })
+      .then((response) => {        
+        if (response.status === 200) {
+          wait().then(() => setOpenCode(false));
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "file.jpg");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }else{
+          setCodeErr("Invalid code!!");
+        }
+      })
+      .catch((error) => {
+        setCodeErr("Invalid code!!");
+        console.log(error.response);
+      });
+  };
 
   const handleDelete = (uniqueCode: string): void => {
-    setRefresh(true)
-    axios.delete('http://localhost:8000/deletefile', {
-      data: { fileId: uniqueCode }, 
-      headers: {
-        "Content-Type": "application/json", 
-      },
-    }).then((response) => {
-      setRefresh(false)
-      toast.success(response.data.message)
-      console.log(response.data);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
+    setRefresh(true);
+    axios
+      .delete("http://localhost:8000/deletefile", {
+        data: { fileId: uniqueCode },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setRefresh(false);
+        toast.success(response.data.message);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -144,7 +152,7 @@ const Page = () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Share link</DialogTitle>
+              <DialogTitle>Upload file</DialogTitle>
               <Dialog.Description>
                 Select the file you want to upload
               </Dialog.Description>
@@ -233,6 +241,11 @@ const Page = () => {
                             <Dialog.Description>
                               Enter the code to Download the file
                             </Dialog.Description>
+                            {codeErr && (
+                              <Dialog.Description className="text-red-600">
+                                {codeErr}
+                              </Dialog.Description>
+                            )}
                           </DialogHeader>
                           <div className="flex items-center space-x-2">
                             <div className="grid flex-1 gap-2">
@@ -271,7 +284,7 @@ const Page = () => {
                       </Dialog.Root>
                       <Button
                         className="font-medium ml-2 text-white bg-red-500 hover:bg-white hover:text-black"
-                        onClick={()=>handleDelete(item.uniqueCode)}
+                        onClick={() => handleDelete(item.uniqueCode)}
                       >
                         Delete
                       </Button>

@@ -1,5 +1,4 @@
 import fileModel from "../../model/userFileSchema";
-import userModel from "../../model/userSchema";
 
 export class UserRepository{
     //file uploading to database
@@ -25,7 +24,11 @@ export class UserRepository{
     async userFileDownload(data: string){
         try {
             const fileToDownload = await fileModel.findOne({uniqueCode: data})
-            return fileToDownload
+            if(fileToDownload){
+                return fileToDownload
+            }else{
+                return
+            }
         } catch (error) {
             console.error("File download error",error);
         }
