@@ -21,7 +21,6 @@ const Login = () => {
           "Content-Type": 'application/json' 
         }
       }).then((response) => {
-        console.log('response',response.data)
         if(response.status === 200){
           const token = response.data.token
           localStorage.setItem('token', token);

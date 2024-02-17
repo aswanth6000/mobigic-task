@@ -18,7 +18,7 @@ export class AuthController{
 // @DESC users can login to the website by validation
 // @METHOD  post
 // @PATH /login
-    async login(req: any, res: Response){
+    async login(req: Request, res: Response){
         const {email, password} = req.body;
         try {
             const userData: any = await authService.loginUser(email) //todo fix ts
@@ -28,7 +28,6 @@ export class AuthController{
                 const userVerify = await bcrypt.compare(password,userData[0].password)                
                 if(userVerify){
                     const token = jwt.sign({ userId: userData[0]._id }, jwtSecret, { expiresIn: '1h' });
-                    req.session = {token: token};//setting token to sesion object
                     res.status(200).json({message: "login success", token})
                 }else{
                     return res.status(401).json({messgae:"incorrect password"})
