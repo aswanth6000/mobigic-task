@@ -55,6 +55,21 @@ The application is containerized using Docker. You can build and run the Docker 
 docker build -t dockerusername/projectname .
 
 ```
+## Start the app 
+
+You can start the app  using the following commands:
+
+```bash
+cd server
+npm run build 
+npm start
+
+// or you can
+
+cd server
+npm run dev
+
+```
 
 ## Screenshots
 
